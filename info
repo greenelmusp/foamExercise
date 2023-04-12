@@ -15,3 +15,5 @@ Co=U*dt/dx
 
 // It will diverge when the U is set to 1.6 m/s
 // can use adjustable time step, MaxCo, but it won't help much since the model used (laminar flow) is not correct
+
+// github is now used
