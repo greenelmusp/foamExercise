@@ -1,0 +1,2 @@
+# foamExercise
+openFoam examples
