@@ -1,0 +1,168 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 0.001;                // scaling factor for converting unit to meter
+
+vertices                            // list of vertex coordinate
+(
+    (0 0 0)                         // point '0'
+    (60 0 0)                        // point '1'
+    (60 5 0)                        // pont  '2'
+    (0 5 0)                         // point '3'
+    
+    (0 0 0.1)                       // point '4'
+    (60 0 0.1)                      // point '5'
+    (60 5 0.1)                      // point '6'
+    (0 5 0.1)                       // point '7'
+
+    (0 1 0)                         // point '8'
+    (-5 1 0)                        // point '9'
+    (-5 0 0)                        // point '10'
+
+    (0 1 0.1)                       // point '11'
+    (-5 1 0.1)                      // point '12'
+    (-5 0 0.1)                      // point '13'
+);
+
+blocks                              // ordered list of vertex labels and mesh size
+(
+//    hex (0 1 2 3 4 5 6 7) (20 20 1) edgeGrading (1 1 1 1 2 2 2 2 3 3 3 3) // specify exansion ratio in each edge (in the order of x-, y-, and z- direction)
+    hex (0 1 2 3 4 5 6 7) (100 20 1) 
+    simpleGrading
+    (
+        1
+        ((0.5 0.5 4)(0.5 0.5 0.25))
+        1
+    )
+    
+    hex (0 8 9 10 4 11 12 13) (20 10 1)
+    simpleGrading
+    (
+        1
+        ((0.5 0.5 4)(0.5 0.5 0.25))
+        1
+    )
+);                                                               
+
+edges                               // used to describe curved geometry; default is straight line
+(
+//    arc 1 5 (1.1 0.0 0.5)         // generate an arc line between point '1' and point '5' using extra information in (1.1 0.0 0.5)
+);   
+                                    // Options are: arc; spline - spline cure; polyLIne; and BSpline
+
+mergePatchPairs                     // list of patches to be merged
+(
+    (master slave)
+);
+
+/********************************************************************************************************
+ * available boundary patch type in openFoam                                                            *
+ * patch - generic type containing no geometric/topological info of the mesh, normally for inlet/outlet *
+ * wall - for solid wall; required for some physical model (e.g. wall functions in turbulence model     *
+ * symmetryPlane - for a planar patch which is a symmetry plane                                         *
+ * empty - for 2D/1D problem. used on surface whose normal direction solution is not required           *
+ * cyclic - enables two patches to be treated as if they are physically connected                       *
+ * processor the type that describes inter-processor boundaries for meshes decomposed for parrel running*
+ *                                                                                                      *
+ * Note: cyclic patch should apprear as a pair (exmple)                                                 *
+ * left                                                                                                 *
+ * {                                                                                                    *
+ *      type cyclic;                                                                                    *
+ *      neighbourPatch  right;                                                                          *
+ *      faces ((0 4 7 3));                                                                              *
+ * }                                                                                                    *
+ * right                                                                                                *
+ * {                                                                                                    *
+ *      type cyclic;                                                                                    *
+ *      neighbourPatch  left;                                                                           *
+ *      faces ((1 5 6 2));                                                                              *
+ * }                                                                                                    *
+ * ******************************************************************************************************/
+
+
+
+boundary                            // sub-dictionary of boundary patches to generate boundary surfaces
+(
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (10 13 12 9)           
+        );
+    }
+    
+    outlet
+    {
+        type patch;
+        faces
+        (
+            (2 6 5 1)
+        );
+    }
+    
+    walls
+    {
+        type wall;
+        faces
+        (
+            (2 3 7 6)
+            (9 12 11 8)
+        );
+    }
+    
+    frontAndBack
+    {
+        type empty;
+        faces
+        (
+            (10 9 8 0)
+            (4 11 12 13)
+            (0 3 2 1)
+            (4 5 6 7)
+        );
+    }
+        
+    sym
+    {
+        type symmetry;
+        faces
+        (
+            (0 4 13 10)
+            (0 1 5 4)
+        );
+    }
+    
+    slave
+    {
+        type wall;
+        faces
+        (
+            (0 4 7 3)
+        );
+    }
+    
+    master
+    {
+        type wall;
+        faces
+        (
+            (4 0 8 11)
+        );
+    }
+);
+
+
+// ************************************************************************* //

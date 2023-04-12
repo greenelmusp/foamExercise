@@ -1,0 +1,26 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       regIOobject;
+    location    "constant/polyMesh";
+    object      pointZones;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+1
+(
+masterslave0CutPointZone
+{
+    type pointZone;
+pointLabels     List<label> 8(4692 4693 4694 4695 4696 4697 4698 4699);
+}
+)
+
+// ************************************************************************* //

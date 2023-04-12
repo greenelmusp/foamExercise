@@ -1,0 +1,17 @@
+//This is flow through a pipe
+//U is adjusted to change the flow from laminar to turbulent
+//pimpleFoam is used
+
+Re=U*D/nu
+
+D=5*10^-3
+nu=10^-6
+U=0.4                         //Re=2000
+
+dx=5*10^-5
+dt=5*10^-4
+Co=U*dt/dx  
+
+
+// It will diverge when the U is set to 1.6 m/s
+// can use adjustable time step, MaxCo, but it won't help much since the model used (laminar flow) is not correct
